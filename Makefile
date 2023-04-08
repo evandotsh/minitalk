@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/08 14:00:27 by evmorvan          #+#    #+#              #
-#    Updated: 2023/04/08 14:17:27 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/04/08 17:54:51 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SERVER_OBJS	=	${SERVER_SRCS:.c=.o}
 # Client stuff
 CLIENT_NAME	=	client
 CLIENT_SRCS	=	$(addprefix sources/client/, \
-					client.c \
+					client.c utils.c \
 				)
 CLIENT_OBJS	=	${CLIENT_SRCS:.c=.o}
 
