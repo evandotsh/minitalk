@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:59:14 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/08 18:16:11 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/09 17:05:58 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,20 @@
 
 void	send_char(pid_t server_pid, char c)
 {
-	int	i;
+	int	width;
 
-	i = 7;
-	printf("\nSending %c: ", c);
-	while (i >= 0)
+	width = 128;
+	while (width)
 	{
-		if (c & (1 << i))
-		{
-			kill(server_pid, SIGUSR2);
-			printf("1");
-			usleep(50);
-		}
-		else
-		{
-			kill(server_pid, SIGUSR1);
-			printf("0");
-			usleep(50);
-		}
-		--i;
+		kill(server_pid, SIGUSR1 + (c & width) / width);
+		width >>= 1;
 	}
 }
 
 int	main(int argc, char **argv)
 {
-	pid_t	server_pid;
-	int		i;
+	pid_t				server_pid;
+	int					i;
 
 	(void) argc;
 	server_pid = ft_atoi(argv[1]);

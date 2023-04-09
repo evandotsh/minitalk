@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 17:52:20 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/08 17:52:30 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/09 16:11:44 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,24 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (nb * sign);
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	char	c;
+
+	if (n == -2147483648)
+	{
+		write(fd, "-2147483648", 11);
+		return ;
+	}
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = -n;
+	}
+	if (n >= 10)
+		ft_putnbr_fd(n / 10, fd);
+	c = ((n % 10) + '0');
+	write(fd, &c, 1);
 }

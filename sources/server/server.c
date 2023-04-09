@@ -6,63 +6,43 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:57:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/08 19:03:05 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/09 17:06:22 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/server.h"
 
-static int	g_cur_bit;
-
-char	binarytochar(int bits[])
+void	handle_signal(int sig, siginfo_t *info, void *ctx)
 {
-	char	c;
-	int		i;
+	static char	c = '\0';
+	static int	width = 128;
 
-	i = 0;
-	c = 0;
-	while (i < 8)
+	(void) ctx;
+	(void) info;
+	c = c | (width * (sig - SIGUSR1));
+	width >>= 1;
+	if (!width)
 	{
-		c |= bits[i] << (7 - i);
-		i++;
+		if (!c)
+			write(1, "\n", 1);
+		else
+			write(1, &c, 1);
+		c = '\0';
+		width = 128;
 	}
-	return (c);
-}
-
-char	reconstruct(int bit)
-{
-	static int	array[7];
-
-	if (g_cur_bit >= 7)
-	{
-		array[g_cur_bit] = bit;
-		g_cur_bit = 0;
-		return (binarytochar(array));
-	}
-	array[g_cur_bit] = bit;
-	g_cur_bit++;
-	return (0);
-}
-
-void	handle_signal(int sig)
-{
-	char	c;
-
-	c = 0;
-	if (sig == SIGUSR1)
-		c = reconstruct(0);
-	else if (sig == SIGUSR2)
-		c = reconstruct(1);
-	if (c != 0)
-		write(1, &c, 1);
+	usleep(30);
 }
 
 int	main(void)
 {
-	g_cur_bit = 0;
-	signal(SIGUSR1, handle_signal);
-	signal(SIGUSR2, handle_signal);
+	struct sigaction	sg_action;
+
+	sg_action.sa_sigaction = handle_signal;
+	sg_action.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &sg_action, NULL);
+	sigaction(SIGUSR2, &sg_action, NULL);
+	printf("Server is up and listening (PID: %d)\n", getpid());
 	while (1)
-		usleep(100);
+		;
 	return (0);
 }
