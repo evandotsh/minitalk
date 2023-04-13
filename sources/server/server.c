@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:57:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/09 17:06:22 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/13 16:40:28 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 
 void	handle_signal(int sig, siginfo_t *info, void *ctx)
 {
-	static char	c = '\0';
-	static int	width = 128;
+	static char	c;
+	static int	width;
 
-	(void) ctx;
-	(void) info;
+	printf("received bit\n");
+	c = '\0';
+	width = 128;
+	(void)ctx;
+	(void)info;
 	c = c | (width * (sig - SIGUSR1));
 	width >>= 1;
-	if (!width)
+	if (width == 0)
 	{
 		if (!c)
 			write(1, "\n", 1);
@@ -30,6 +33,7 @@ void	handle_signal(int sig, siginfo_t *info, void *ctx)
 		c = '\0';
 		width = 128;
 	}
+	kill(info->si_pid, SIGUSR1);
 	usleep(30);
 }
 
