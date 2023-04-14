@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:59:14 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/14 18:43:15 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:39:05 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/client.h"
+#include "../../includes/client_bonus.h"
 
 static int	g_good;
 
@@ -49,6 +49,8 @@ void	sig_handler(int sig)
 {
 	if (sig == SIGUSR1)
 		g_good = 1;
+	if (sig == SIGUSR2)
+		ft_putstr_fd(OK"Message received!", 1);
 	(void)sig;
 	return ;
 }
@@ -62,6 +64,7 @@ int	main(int argc, char **argv)
 		print_and_exit(ERR"Usage: ./client <pid> <text>\n");
 	server_pid = ft_atoi(argv[1]);
 	signal(SIGUSR1, sig_handler);
+	signal(SIGUSR2, sig_handler);
 	i = 0;
 	send_char(server_pid, '\n');
 	while (i != (int) ft_strlen(argv[2]) + 1)

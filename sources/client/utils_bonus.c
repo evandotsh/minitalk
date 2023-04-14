@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/08 13:58:04 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/14 18:41:22 by evmorvan         ###   ########.fr       */
+/*   Created: 2023/04/08 17:52:20 by evmorvan          #+#    #+#             */
+/*   Updated: 2023/04/14 18:39:14 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#include "../../includes/client_bonus.h"
 
-# define ERR "\033[0;31m[!]\033[0m "
-# define OK "\033[0;32m[*]\033[0m "
+int	is_only_digits(char *str)
+{
+	int	i;
 
-# include "../libft/includes/libft.h"
-# include <signal.h>
-# include <sys/types.h>
-
-#endif
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (1);
+		i++;
+	}
+	return (0);
+}

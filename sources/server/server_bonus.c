@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus copy.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:57:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/14 18:57:27 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:57:42 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/server.h"
+#include "../../includes/server_bonus.h"
 
 void	reset_session(pid_t new_pid, pid_t *old_pid, int *width, char *c)
 {
@@ -32,6 +32,8 @@ void	handle_signal(int sig, siginfo_t *info, void *ctx)
 	width >>= 1;
 	if (!width)
 	{
+		if (c == '\0')
+			kill(info->si_pid, SIGUSR2);
 		if (c)
 			write(1, &c, 1);
 		c = 0;
