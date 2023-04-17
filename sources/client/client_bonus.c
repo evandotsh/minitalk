@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:59:14 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/17 15:31:41 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:36:35 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	sig_handler(int sig)
 	if (sig == SIGUSR1)
 		g_good = 1;
 	if (sig == SIGUSR2)
-		ft_putstr_fd(OK"Message received!", 1);
+		ft_putstr_fd(OK"Message received!\n", 1);
 	(void)sig;
 	return ;
 }
