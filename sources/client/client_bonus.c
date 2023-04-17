@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:59:14 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/14 18:39:05 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:31:41 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	g_good;
 void	print_and_exit(char *str)
 {
 	ft_putstr_fd(str, 2);
+	ft_putchar_fd('\n', 2);
 	exit(1);
 }
 
@@ -61,7 +62,7 @@ int	main(int argc, char **argv)
 	int		i;
 
 	if (argc != 3 || ft_strlen(argv[2]) <= 0 || is_only_digits(argv[1]))
-		print_and_exit(ERR"Usage: ./client <pid> <text>\n");
+		print_and_exit(ERR"Usage: ./client <pid> <text>");
 	server_pid = ft_atoi(argv[1]);
 	signal(SIGUSR1, sig_handler);
 	signal(SIGUSR2, sig_handler);

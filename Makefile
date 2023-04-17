@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/08 14:00:27 by evmorvan          #+#    #+#              #
-#    Updated: 2023/04/14 18:56:14 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/04/15 12:58:19 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,30 +35,36 @@ CLIENT_B_SRCS	=	$(addprefix sources/client/, \
 					)
 CLIENT_B_OBJS	=	${CLIENT_B_SRCS:.c=.o}
 
+LIBFT_BIN		= ./libft/libft.a
+
+ifdef MAKEBONUS
+	CLIENT_OBJS = ${CLIENT_B_OBJS}
+	SERVER_OBJS = ${SERVER_B_OBJS}
+endif
+
 .c.o:
 		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 all:	${CLIENT_NAME} ${SERVER_NAME}
 
-libft.a:
-		${MAKE} -C ./libft
+${CLIENT_NAME}:	${CLIENT_OBJS} ${LIBFT_BIN}
+		${CC} ${CLIENT_OBJS} -o ${CLIENT_NAME} ${LIBFT_BIN}
 
-${CLIENT_NAME}:	libft.a ${CLIENT_OBJS}
-		${CC} ${CLIENT_OBJS} ./libft/libft.a -o ${CLIENT_NAME}
+${SERVER_NAME}: ${SERVER_OBJS} ${LIBFT_BIN}
+		${CC} ${SERVER_OBJS} -o ${SERVER_NAME} ${LIBFT_BIN}
 
-${SERVER_NAME}:	libft.a ${SERVER_OBJS}
-		${CC} ${SERVER_OBJS} ./libft/libft.a -o ${SERVER_NAME}
+bonus: ${CLIENT_B_OBJS} ${SERVER_B_OBJS} ${LIBFT_BIN}
+		@make MAKEBONUS=1 all
 
-bonus:	libft.a ${CLIENT_B_OBJS} ${SERVER_B_OBJS}
-		${CC} ${CLIENT_B_OBJS} ./libft/libft.a -o ${CLIENT_NAME}
-		${CC} ${SERVER_B_OBJS} ./libft/libft.a -o ${SERVER_NAME}
+${LIBFT_BIN}:
+		@${MAKE} -C ./libft
 
 clean:
-		${MAKE} -C ./libft clean
+		@${MAKE} -C ./libft clean
 		rm -f ${SERVER_OBJS} ${CLIENT_OBJS} ${SERVER_B_OBJS} ${CLIENT_B_OBJS}
 
 fclean:	clean
-		${MAKE} -C ./libft fclean
+		@${MAKE} -C ./libft fclean
 		rm -f ${SERVER_NAME} ${CLIENT_NAME}
 
 re:		fclean all
