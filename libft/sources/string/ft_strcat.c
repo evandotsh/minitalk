@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/08 17:52:20 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/14 18:44:00 by evmorvan         ###   ########.fr       */
+/*   Created: 2023/04/19 08:43:54 by evmorvan          #+#    #+#             */
+/*   Updated: 2023/04/19 08:44:23 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/client.h"
+#include "../includes/libft.h"
 
-int	is_only_digits(char *str)
+char	*ft_strcat(char *dest, char *src)
 {
-	int	i;
+	size_t	i;
+	size_t	len;
 
 	i = 0;
-	while (str[i] != '\0')
+	len = ft_strlen(dest);
+	while (src[i] != '\0')
 	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			return (1);
+		dest[len] = src[i];
 		i++;
+		len++;
 	}
-	return (0);
+	dest[len] = '\0';
+	return (dest);
 }

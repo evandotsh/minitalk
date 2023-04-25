@@ -6,69 +6,86 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:59:14 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/17 15:31:17 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/24 19:31:17 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/client.h"
 
-static int	g_good;
+static int	g_ack;
 
-void	print_and_exit(char *str)
+int	is_only_digits(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void	print_and_exit(char *str)
 {
 	ft_putstr_fd(str, 2);
 	ft_putchar_fd('\n', 2);
 	exit(1);
 }
 
-void	send_char(pid_t server_pid, char c)
+static void	send_char(pid_t server_pid, char c)
 {
-	int	width;
+	int	bit;
 	int	ret;
 	int	timeout;
 
-	width = 128;
-	while (width)
+	bit = 0;
+	timeout = 0;
+	while (bit < 8)
 	{
-		timeout = 0;
-		usleep(50);
-		ret = kill(server_pid, SIGUSR1 + (c & width) / width);
+		g_ack = 0;
+		ret = kill(server_pid, SIGUSR1 + ((c & (128 >> bit)) > 0));
 		if (ret < 0)
-			print_and_exit(ERR"Can't connect to the server.");
-		while (!g_good)
+			print_and_exit(ERR "Can't connect to the server.");
+		while (!g_ack)
 		{
 			if (timeout++ > 3)
-				print_and_exit(ERR"Server timed out.");
+				print_and_exit(ERR "Server timed out.");
 			sleep(1);
 		}
-		g_good = 0;
-		width >>= 1;
+		timeout = 0;
+		bit++;
+		usleep(100);
 	}
 }
 
-void	sig_handler(int sig)
+static void	sig_handler(int sig, siginfo_t *info, void *ctx)
 {
+	(void)ctx;
+	(void)info;
 	if (sig == SIGUSR1)
-		g_good = 1;
-	(void)sig;
-	return ;
+		g_ack = 1;
 }
 
 int	main(int argc, char **argv)
 {
-	pid_t	server_pid;
-	int		i;
+	pid_t				server_pid;
+	struct sigaction	sg_action;
+	int					i;
+	int					len;
 
 	if (argc != 3 || ft_strlen(argv[2]) <= 0 || is_only_digits(argv[1]))
-		print_and_exit(ERR"Usage: ./client <pid> <text>");
+		print_and_exit(ERR "Usage: ./client <pid> <text>");
 	server_pid = ft_atoi(argv[1]);
-	signal(SIGUSR1, sig_handler);
+	sigemptyset(&sg_action.sa_mask);
+	sg_action.sa_flags = SA_SIGINFO;
+	sg_action.sa_sigaction = sig_handler;
+	sigaction(SIGUSR1, &sg_action, NULL);
 	i = 0;
-	send_char(server_pid, '\n');
-	while (i != (int) ft_strlen(argv[2]) + 1)
-	{
-		send_char(server_pid, argv[2][i]);
-		i++;
-	}
+	len = ft_strlen(argv[2]);
+	while (i <= len)
+		send_char(server_pid, argv[2][i++]);
 	return (0);
 }

@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_bonus.h                                     :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/08 13:58:33 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/24 19:29:45 by evmorvan         ###   ########.fr       */
+/*   Created: 2023/04/19 08:43:19 by evmorvan          #+#    #+#             */
+/*   Updated: 2023/04/19 08:43:26 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_BONUS_H
-# define CLIENT_BONUS_H
+#include "../includes/libft.h"
 
-# define ERR "\033[0;31m[!]\033[0m "
-# define OK "\033[0;32m[*]\033[0m "
+char	*ft_strcpy(char *dest, char *src)
+{
+	int	i;
 
-# include "../libft/includes/libft.h"
-# include <signal.h>
-# include <sys/types.h>
-
-#endif
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}

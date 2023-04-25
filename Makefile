@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/08 14:00:27 by evmorvan          #+#    #+#              #
-#    Updated: 2023/04/15 12:58:19 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/04/24 19:29:56 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,11 @@ SERVER_B_OBJS	=	${SERVER_B_SRCS:.c=.o}
 # Client stuff
 CLIENT_NAME		=	client
 CLIENT_SRCS		=	$(addprefix sources/client/, \
-						client.c utils.c \
+						client.c \
 					)
 CLIENT_OBJS		=	${CLIENT_SRCS:.c=.o}
 CLIENT_B_SRCS	=	$(addprefix sources/client/, \
-						client_bonus.c utils_bonus.c \
+						client_bonus.c \
 					)
 CLIENT_B_OBJS	=	${CLIENT_B_SRCS:.c=.o}
 
