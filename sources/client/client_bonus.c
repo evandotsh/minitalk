@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:59:14 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/25 14:11:40 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:44:53 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	g_ack;
 
-int	is_only_digits(char *str)
+static int	is_only_digits(char *str)
 {
 	int	i;
 

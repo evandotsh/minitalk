@@ -6,13 +6,13 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:57:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/25 14:13:07 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:45:14 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/server_bonus.h"
 
-void	reset_session(pid_t new_pid, pid_t *old_pid, int *bit, int *c)
+static void	reset_session(pid_t new_pid, pid_t *old_pid, int *bit, int *c)
 {
 	*old_pid = new_pid;
 	*bit = 0;
@@ -23,6 +23,7 @@ static void	stash_char(char c)
 {
 	static char	*str;
 	char		*tmp;
+	char		*tmp2;
 
 	if (!str)
 	{
@@ -32,7 +33,9 @@ static void	stash_char(char c)
 	tmp = malloc(2);
 	tmp[0] = c;
 	tmp[1] = '\0';
-	str = ft_strjoin(str, tmp);
+	tmp2 = str;
+	str = ft_strjoin(tmp2, tmp);
+	free(tmp2);
 	if (c == 0)
 	{
 		ft_printf("%s\n", str);
@@ -42,7 +45,7 @@ static void	stash_char(char c)
 	free(tmp);
 }
 
-void	handle_signal(int sig, siginfo_t *info, void *ctx)
+static void	handle_signal(int sig, siginfo_t *info, void *ctx)
 {
 	static int		c;
 	static int		bit;
@@ -77,9 +80,7 @@ int	main(void)
 	sg_action.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sg_action, NULL);
 	sigaction(SIGUSR2, &sg_action, NULL);
-	ft_putstr_fd(OK"Server is up and listening on PID ", 1);
-	ft_putnbr_fd(getpid(), 1);
-	ft_putchar_fd('\n', 1);
+	ft_printf(OK"Server is up and listening on PID %d (BONUS)\n", getpid());
 	while (1)
 		pause();
 	return (0);
