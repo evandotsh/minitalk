@@ -21,9 +21,9 @@ pause();
 ## Implementation
 The goal of this project is to create a client-server communication pair that uses UNIX signals to communicate between processes.
 
-In my implementation, the client first checks if the message is valid and the correct number of arguments are passed. Then, for each character, it sends each bit one by one, using `SIGUSR1` to represent a `0` and `SIGUSR2` to represent a `1`. The server is waiting for a `SIGUSR1` signal to acknowledge that it received and processed the bit before moving on to the next bit.
+In my implementation, the client first checks if the message is valid and the correct number of arguments are passed. Then, for each character, it sends each bit one by one, using `SIGUSR1` to represent a `0` and `SIGUSR2` to represent a `1` it then waits for a `SIGUSR1` signal back to acknowledge that it received and processed the bit before moving on to the next bit.
 
-In the server implementation, each bit is received one by one as either `SIGUSR1` or `SIGUSR2` signal. The bits are processed in order to recreate the character and add it to the buffer. Once the null character `\0` is reached, the server prints the buffer, and then sends a `SIGUSR2` signal back to the client, indicating that the message has been fully received and printed on the server side.
+In the server implementation, each bit is received one by one as either `SIGUSR1` or `SIGUSR2` signal. The bits are processed in order to recreate the character and add it to the buffer. Once the null character `\0` is reached, the server prints the buffer, and then sends a `SIGUSR2` signal back to the client, indicating that the message has been fully received and displayed on the server's side.
 
 ```
 Example exchange for the letter 'B' (01100010):
