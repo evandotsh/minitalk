@@ -5,13 +5,13 @@
 
 ## Newly Learned Functions
 ```c
-signal()
-kill()
-sigemptyset()
-sigaddset()
-sigaction()
-getpid()
-pause()
+signal();
+kill();
+sigemptyset();
+sigaddset();
+sigaction();
+getpid();
+pause();
 ```
 
 ## Pain Points
