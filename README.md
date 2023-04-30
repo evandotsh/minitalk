@@ -1,4 +1,4 @@
-# 🛰️ minitalk
+# 🛰️ minitalk (42 School)
 
 ![Grade Badge](https://img.shields.io/badge/Grade-125-brightgreen)
 ![Norminette Badge](https://github.com/evandotsh/minitalk/actions/workflows/main.yml/badge.svg)
