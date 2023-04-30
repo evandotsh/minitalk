@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:57:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/25 14:45:23 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/04/29 15:48:47 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static void	handle_signal(int sig, siginfo_t *info, void *ctx)
 	if (bit == 8)
 	{
 		stash_char(c);
+		if (c == 0)
+			kill(current_pid, SIGUSR2);
 		c = 255;
 		bit = 0;
 	}
@@ -78,7 +80,7 @@ int	main(void)
 	sg_action.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sg_action, NULL);
 	sigaction(SIGUSR2, &sg_action, NULL);
-	ft_printf(OK"Server is up and listening on PID %d\n", getpid());
+	ft_printf(OK"Server is up and listening on PID %d (BONUS)\n", getpid());
 	while (1)
 		pause();
 	return (0);
